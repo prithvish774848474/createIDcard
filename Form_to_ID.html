@@ -1,0 +1,4192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Prithvish Sarkar">
+    <meta name="description" content="Convert the given info from input form to Identity Card">
+    <title>Form to ID Card</title>
+    <noscript>Your browser does not support JavaScript!!!</noscript>
+    <style>
+        form {background-color: #f0f0f0; padding: 0.5em; border-radius: 5px;}
+        fieldset, .gridBox {
+            display: grid;
+            grid-template-columns: 30% 70%;
+        }
+        .gridBox {row-gap: 0.5em;}
+        legend {font-family: Verdana, Geneva, Tahoma, sans-serif;}
+        fieldset > label, .gridBox > label {padding: 0.5em;}
+        fieldset > input, .gridBox > input, .gridBox > select {padding: 0.5em; border: 2px solid lightseagreen; border-radius: 5px;}
+        fieldset > input:not(:last-child){border-bottom: none;}
+        button {
+            display: block;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #000;
+            padding: 0.5em;
+            background-color: rgba(38, 172, 170, 0.3);
+            border: 1px solid #000;
+            border-radius: 0.5em;
+            max-width: 100%;
+            transition: background-color 2s linear;
+            margin-top: 0.5em;
+        }
+        button:hover {cursor: pointer; background-color: rgba(38, 172, 170, 0.8);}
+        header {
+            text-align: center;
+            font-size: 2em;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: darkblue;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin: 0.25em; padding: 0.5em;
+            animation: changingBgColor 10s infinite linear;
+        }
+        @keyframes changingBgColor{
+            0%{background-color: rgba(0, 0, 0, 0.2);}
+            50%{background-color: #fff;}
+            100%{background-color: rgba(0, 0, 0, 0.2);}
+        }
+        #submitButton {display: flex; justify-content: center;}
+        #cardContainer {display: grid; grid-template-columns: auto auto; column-gap: 0.5em;}
+        #frontCardContainer {
+        display: grid;
+        grid-template-columns: 25% 30% 45%;
+        row-gap: 1em;
+        padding: 0.5em;
+        background-color: rgba(245, 245, 245, 0.5);
+        font-family: Verdana, sans-serif;
+        box-sizing: border-box;
+        text-align: center;
+        border: 1px solid rgb(200, 200, 200);
+        border-radius: 0.5em;
+      }
+      #frontCardContainer div:nth-child(2) {grid-column: 2 / 4;}
+      #frontCardContainer div:nth-child(3) {grid-row: 2 / 5;}
+      #frontCardContainer div:nth-child(10) {grid-row: 5 / 7;}
+      #rearCardContainer {
+        display: grid;
+        grid-template-columns: auto auto;
+        row-gap: 1em;
+        padding: 0.5em;
+        text-align: center;
+        border: 1px solid rgb(200, 200, 200);
+        background-color: rgba(245, 245, 245, 0.5);
+        font-family: Verdana, sans-serif;
+        box-sizing: border-box;
+        border-radius: 0.5em;
+      }
+      #rearCardContainer div:first-child, #rearCardContainer div:last-child {grid-column: 1 / 3; font-weight: bold;}
+      #rearCardContainer div:nth-child(1), #rearCardContainer div:nth-child(3) {
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+      }
+      @media screen and (max-width: 500px){
+        #cardContainer {grid-template-columns: auto; row-gap: 0.5em;}
+        fieldset, .gridBox {grid-template-columns: auto;}
+      }
+    </style>
+</head>
+<body>
+    <header>Enter your details and create an Identity Card<br>Try it out, it's a fun game!!!</header>
+    <form action="javascript: void(0)" method="post" autocomplete="on" enctype="multipart/form-data">
+        <!--Your Full Name-->
+        <fieldset>
+            <legend>Your Full Name</legend>
+            <label for="firstName">Enter your First Name:</label>
+            <input id="firstName" type="text" name="firstName" required placeholder="Example: Sanjay">
+            <label for="middleName">Enter your Middle Name (optional):</label>
+            <input id="middleName" type="text" name="middleName" placeholder="Example: Leela">
+            <label for="lastName">Enter your Last Name:</label>
+            <input id="lastName" type="text" name="lastName" required placeholder="Example: Bhansali">
+        </fieldset><br>
+        <!--Your Mother's Full Name-->
+        <fieldset>
+            <legend>Your Mother's Full Name</legend>
+            <label for="MotherFirstName">Enter your Mother's First Name:</label>
+            <input id="MotherFirstName" type="text" name="MotherFirstName" required>
+            <label for="MotherMiddleName">Enter your Mother's Middle Name (optional):</label>
+            <input id="MotherMiddleName" type="text" name="MotherMiddleName">
+            <label for="MotherLastName">Enter your Mother's Last Name:</label>
+            <input id="MotherLastName" type="text" name="MotherLastName" required>
+        </fieldset><br>
+        <!--Your Father's Full Name-->
+        <fieldset>
+            <legend>Your Father's Full Name</legend>
+            <label for="FatherFirstName">Enter your Father's First Name:</label>
+            <input id="FatherFirstName" type="text" name="FatherFirstName" required>
+            <label for="FatherMiddleName">Enter your Father's Middle Name (optional):</label>
+            <input id="FatherMiddleName" type="text" name="FatherMiddleName">
+            <label for="FatherLastName">Enter your Father's Last Name:</label>
+            <input id="FatherLastName" type="text" name="FatherLastName" required>
+        </fieldset><br>
+        <div class="gridBox">
+            <!--Your Date of Birth-->
+            <label for="DoB">Enter your Date of Birth:</label>
+            <input id="DoB" type="date" name="DoB" required>
+            <!--Your Gender-->
+            <label for="Gender">What is your Gender?</label>
+            <div>
+                <input id="MaleGender" type="radio" name="Gender" value="Male">Male &nbsp; &nbsp; &nbsp;
+                <input id="FemaleGender" type="radio" name="Gender" value="Female">Female &nbsp; &nbsp; &nbsp;
+                <input id="OtherGender" type="radio" name="Gender" value="Others">Others &nbsp; &nbsp; &nbsp;
+            </div>
+            <!--Your Residential Address-->
+            <label for="state">Enter your residential state:</label>
+            <select id="state" name="state" required onchange="updateSelection()">
+                <option value="None">--Select--</option>
+                <option value="AndraPradesh">Andra Pradesh</option>
+                <option value="ArunachalPradesh">Arunachal Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujrat">Gujrat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="HimachalPradesh">Himachal Pradesh</option>
+                <option value="J&K">Jammu & Kashmir</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerela</option>
+                <option value="MadhyaPradesh">Madhya Pradesh</option>
+                <option value="Maharashtra">Maharastra</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="TamilNadu">Tamil Nadu</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Tirpura">Tripura</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="UttarPradesh">Uttar Pradesh</option>
+                <option value="WestBengal">West Bengal</option>
+            </select>
+            <label for="district">Enter your residential district:</label>
+            <select id="district" name="district"></select>
+            <label for="zipCode">Enter your 6-digit postal code:</label>
+            <input id="zipCode" type="number" required placeholder="Example: 123456" name="PostalCode">
+            <label for="passportPhoto">Enter your passport size photograph:</label>
+            <input id="passportPhoto" type="file" name="passportPhoto" accept=".jpg, .jpeg, .png" maxlength="102400" required>
+            <label for="signature">Enter the image of your signature</label>
+            <input id="signature" type="file" name="signature" accept=".jpg, .jpeg, .png" maxlength="102400" required>
+        </div>
+        <div id="submitButton">
+            <button type="button" name="submit" value="Click Here" onclick="displayCard()">Click Here to generate your card</button>
+        </div>
+    </form>
+    <h1 style="text-align: center; display:none;">Congrats! <br> Your Identity Card is ready </h1>
+    <div id="cardContainer">
+        <!-- The Front Side of the Card -->
+        <div id="frontCardContainer">
+            <div id="nationalFlag"><img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="National Flag of India" style="height: 2em; width: 3em;"></div>
+            <div class="idNumber" style="font-weight: bold;"></div>
+            <div id="PassportPhoto"></div>
+            <div>Your Name:</div>
+            <div id="nameValue"></div>
+            <div>Father's Name:</div>
+            <div id="fatherNameValue"></div>
+            <div>Mother's Name:</div>
+            <div id="motherNameValue"></div>
+            <div id="signaturePhoto"></div>
+            <div>Date Of Birth:</div>
+            <div id="DoBValue"></div>
+            <div>Gender</div>
+            <div id="GenderValue"></div>
+        </div>
+        <!-- The Rear Side of the Card -->
+        <div id="rearCardContainer">
+            <div>Personal Identification Card</div>
+            <div><img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" alt="National Flag of India" style="height: 2em; width: 3em;"></div>
+            <div style="font-weight: bold;">Government of India</div>
+            <div>State:</div>
+            <div id="stateValue"></div>
+            <div>District:</div>
+            <div id="districtValue"></div>
+            <div>Zip Code:</div>
+            <div id="zipCodeValue"></div>
+            <div class="idNumber" style="font-weight: bold;"></div>
+        </div>
+    </div>
+    <!--JavaScript begins here-->
+    <script>
+        // Check whether the Gender is selected or not
+        let Submission=document.querySelector("button");
+        Submission.addEventListener("click", ()=>{
+            let maleGender=document.getElementById("MaleGender");
+            let femaleGender=document.getElementById("FemaleGender");
+            let otherGender=document.getElementById("OtherGender");
+            if(maleGender.checked===false && femaleGender.checked===false && otherGender.checked===false){alert("Please select you Gender.");}
+        });
+        // Restrict the ZipCode input to 6-digits
+        let zipCode=document.getElementById("zipCode");
+        zipCode.addEventListener("input", ()=>{
+            if(zipCode.value.length>6){zipCode.value=zipCode.value.slice(0, 6);}
+        });
+        // Changing the text size of the SUBMIT button when clicked
+        Submission.addEventListener("mousedown", ()=>{Submission.style.transform="scale(1.1, 1.1)";});
+        Submission.addEventListener("mouseup", ()=>{Submission.style.transform="scale(0.91, 0.91)";});
+        // Inclusion of ID Number in the front part of the card
+        let idNumber=document.getElementsByClassName("idNumber");
+        idNumber[0].innerHTML=Math.floor(Math.pow(10, 12)*Math.random());
+        idNumber[1].innerHTML=idNumber[0].innerHTML;
+        // Fething the Passport Photo
+        let passportPhoto=document.getElementById("passportPhoto");
+        passportPhoto.addEventListener("change", ()=>{
+            let selectedInput=event.target.files[0];
+            let image=document.createElement("img");
+            image.src=URL.createObjectURL(selectedInput);
+            image.style.width="6em";
+            image.style.height="6em";
+            image.style.borderRadius="0.25em";
+            let PassportPhoto=document.getElementById("PassportPhoto");
+            PassportPhoto.innerHTML="";
+            PassportPhoto.appendChild(image);
+        })
+        // Fetching the Signature Photo
+        let signature=document.getElementById("signature");
+        signature.addEventListener("change", ()=>{
+            let selectedSign=event.target.files[0];
+            let imageSign=document.createElement("img");
+            imageSign.src=URL.createObjectURL(selectedSign);
+            imageSign.style.height="4em";
+            imageSign.style.width="6em";
+            imageSign.style.borderRadius="0.25em";
+            let signaturePhoto=document.getElementById("signaturePhoto");
+            signaturePhoto.innerHTML="";
+            signaturePhoto.appendChild(imageSign);
+        })
+        // Fetching the State Name
+        let state=document.getElementById("state");
+        state.addEventListener("change", ()=>{
+            document.getElementById("stateValue").innerHTML=state.value;
+        });
+        // Fetching the District Name
+        let district=document.getElementById("district");
+        district.addEventListener("change", ()=>{
+            document.getElementById("districtValue").innerHTML=district.value;
+        })
+        // Fetching the Postal Code
+        zipCode.addEventListener("input", ()=>{
+            document.getElementById("zipCodeValue").innerHTML=zipCode.value;
+        })
+        // Hiding the Card
+        let cardContainer=document.getElementById("cardContainer");
+        cardContainer.style.display="none";
+        // Function to display the card when SUBMIT  button is clicked
+        function displayCard() {
+            // Displaying the Card
+            document.querySelector("h1").style.display="block";
+            cardContainer.style.display="grid";
+            // Fetching and printing the input name of the person
+            let firstNameValue=document.getElementById("firstName").value;
+            let middleNameValue=document.getElementById("middleName").value;
+            let lastNameValue=document.getElementById("lastName").value;
+            document.getElementById("nameValue").innerHTML=firstNameValue + " " + middleNameValue + " " + lastNameValue;
+            // Fetching and printing the input name of the person's mother
+            let fatherFirstNameValue=document.getElementById("FatherFirstName").value;
+            let fatherMiddleNameValue=document.getElementById("FatherMiddleName").value;
+            let fatherLastNameValue=document.getElementById("FatherLastName").value;
+            document.getElementById("fatherNameValue").innerHTML=fatherFirstNameValue + " " + fatherMiddleNameValue + " "
+            + fatherLastNameValue;
+            // Fetching and printing the input name of the person's mother
+            let motherFirstNameValue=document.getElementById("MotherFirstName").value;
+            let motherMiddleNameValue=document.getElementById("MotherMiddleName").value;
+            let motherLastNameValue=document.getElementById("MotherLastName").value;
+            document.getElementById("motherNameValue").innerHTML=motherFirstNameValue + " " + motherMiddleNameValue + " "
+            + motherLastNameValue;
+            // Fetching and printing the Date of Birth of the person
+            let DoB=document.getElementById("DoB").value;
+            document.getElementById("DoBValue").innerHTML=new Date(DoB).toDateString();
+            // Fetching the Gender of the person
+            document.getElementById("GenderValue").innerHTML=document.querySelector("input[type='radio']").value;
+        }
+        // Function to dynamically choose the address of residence
+        function updateSelection(){
+            let select1=document.getElementById("state").value;
+            let select2=document.getElementById("district");
+            select2.innerHTML=""; // Clearing previous options
+            if(select1=="None"){
+                let option=document.createElement("option");
+                option.value="None";
+                option.innerHTML="--Select--";
+                select2.appendChild(option);
+            }
+            else if(select1=="AndraPradesh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="AlluriSitharamaRaju";
+                option1.innerHTML="Alluri Sitharama Raju";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Anakapalli";
+                option2.innerHTML="Anakapalli";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Ananatapuramu";
+                option3.innerHTML="Anantapuramu";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Annamayya";
+                option4.innerHTML="Annamayya";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Bapatla";
+                option5.innerHTML="Bapatla";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Chittoor";
+                option6.innerHTML="Chitoor";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="EastGodavari";
+                option7.innerHTML="East Godavari";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Eluru";
+                option8.innerHTML="Eluru";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Guntur";
+                option9.innerHTML="Guntur";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Kakinada";
+                option10.innerHTML="Kakinada";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Konaseema";
+                option12.innerHTML="Konaseema";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Krishna";
+                option13.innerHTML="Krishna";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Kurnool";
+                option14.innerHTML="Kurnool";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Nandyal";
+                option15.innerHTML="Nandyal";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="NTR";
+                option16.innerHTML="NTR";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Palnadu";
+                option17.innerHTML="Palnadu";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="ParvathipurmManyam";
+                option18.innerHTML="Parvathipuram Manyam";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Prakasam";
+                option19.innerHTML="Prakasam";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="SriPottiSriramuluNellore";
+                option20.innerHTML="Sri Potti Sriramulu Nellore";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="SriSathyaSai";
+                option21.innerHTML="Sri Sathya Sai";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Srikakulam";
+                option22.innerHTML="Srikakulam";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Tirupati";
+                option23.innerHTML="Tirupati";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Visakhapatnam";
+                option24.innerHTML="Visakhapatnam";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Vizianagaram";
+                option25.innerHTML="Vizianagaram";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="WestGodavari";
+                option26.innerHTML="West Godavari";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="YSR";
+                option27.innerHTML="YSR";
+                select2.appendChild(option27);
+            }
+            else if(select1=="ArunachalPradesh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Anjaw";
+                option1.innerHTML="Anjaw";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Changlang";
+                option2.innerHTML="Changlang";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="DibangValley";
+                option3.innerHTML="Dibang Valley";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="EastKameng";
+                option4.innerHTML="East Kameng";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="EastSiang";
+                option5.innerHTML="East Siang";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Itanagar";
+                option6.innerHTML="Itanagar";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Kamle";
+                option7.innerHTML="Kamle";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="KraDaadi";
+                option8.innerHTML="Kra Daadi";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="KurungKumey";
+                option9.innerHTML="Kurung Kumey";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="LepaRada";
+                option10.innerHTML="Lepa Rada";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Lohit";
+                option12.innerHTML="Lohit";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Longding";
+                option13.innerHTML="Longding";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="LowerDibangValley";
+                option14.innerHTML="Lower Dibang Valley";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="LowerSiang";
+                option15.innerHTML="Lower Siang";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="LowerSubansiri";
+                option16.innerHTML="Lower Subansiri";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Namsai";
+                option17.innerHTML="Namsai";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="PakkeKessang";
+                option18.innerHTML="Pakke Kessang";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="PapumPare";
+                option19.innerHTML="Papum Pare";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="ShiYomi";
+                option20.innerHTML="Shi Yomi";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Siang";
+                option21.innerHTML="Siang";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Tawang";
+                option22.innerHTML="Tawang";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Tirap";
+                option23.innerHTML="Tirap";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="UpperSiang";
+                option24.innerHTML="Upper Siang";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="UpperSubansiri";
+                option25.innerHTML="Upper Subansiri";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="WestKameng";
+                option26.innerHTML="West Kameng";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="WestSiang";
+                option27.innerHTML="West Siang";
+                select2.appendChild(option27);
+            }
+            else if(select1=="Assam"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Baksa";
+                option1.innerHTML="Baksa";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Barpeta";
+                option2.innerHTML="Barpeta";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Bongaigaon";
+                option3.innerHTML="Bongaigaon";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Cachar";
+                option4.innerHTML="Cachar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Charaideo";
+                option5.innerHTML="Charaidoe";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Chirang";
+                option6.innerHTML="Chirang";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Darrang";
+                option7.innerHTML="Darrang";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Dhreemaji";
+                option8.innerHTML="Dheemaji";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Dhubri";
+                option9.innerHTML="Dhubri";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Dibrugarh";
+                option10.innerHTML="Dibrugarh";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="DimaHasao";
+                option12.innerHTML="DimaHasao";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Goalpara";
+                option13.innerHTML="Goalpara";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Golaghat";
+                option14.innerHTML="Golaghat";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Hailakandi";
+                option15.innerHTML="Hailakandi";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Jorhat";
+                option16.innerHTML="Jorhat";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Kamrup";
+                option17.innerHTML="Kamrup";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="KarbiAnglong";
+                option18.innerHTML="Karbi Anglong";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Karimganj";
+                option19.innerHTML="Karimganj";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Kokrajhar";
+                option20.innerHTML="Kokrajhar";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Lakhimpur";
+                option21.innerHTML="Lakhimpur";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Majuli";
+                option22.innerHTML="Majuli";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Morigaon";
+                option23.innerHTML="Morigaon";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Nagaon";
+                option24.innerHTML="Nagaon";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Nalbari";
+                option25.innerHTML="Nalbari";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Sivasagar";
+                option26.innerHTML="Sivasagar";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Sonitpur";
+                option27.innerHTML="Sonitpur";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement("option");
+                option28.value="SothSalmara";
+                option28.innerHTML="South Salamara";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Tinsukia";
+                option29.innerHTML="Tinsukia";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Udalguri";
+                option30.innerHTML="Udalguri";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="WestkarbiAnglong";
+                option31.innerHTML="West Karbi Anglong";
+                select2.appendChild(option31);
+            }
+            else if(select1=="Bihar"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Araria";
+                option1.innerHTML="Araria";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Arwal";
+                option2.innerHTML="Arwal";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="ChhatrapatiSambhajiNagar";
+                option3.innerHTML="Chhatrapati Sambhaji Nagar";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Banka";
+                option4.innerHTML="Banka";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Begusarai";
+                option5.innerHTML="Begusarai";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Bhagalpur";
+                option6.innerHTML="Bhagalpur";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Bhojpur";
+                option7.innerHTML="Bhojpur";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Buxar";
+                option8.innerHTML="Buxar";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Darbhanga";
+                option9.innerHTML="Darbhanga";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="EastChamparan";
+                option10.innerHTML="East Champaran";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Gaya";
+                option12.innerHTML="Gaya";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Gopalganj";
+                option13.innerHTML="Gopalganj";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Jamui";
+                option14.innerHTML="Jamui";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Jehanabad";
+                option15.innerHTML="Jehanabad";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Kaimur";
+                option16.innerHTML="Kaimur";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Katihar";
+                option17.innerHTML="Katihar";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Khagaria";
+                option18.innerHTML="Khagaria";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Kishanganj";
+                option19.innerHTML="Kishanganj";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Lakhisarai";
+                option20.innerHTML="Lakhisarai";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Madhepura";
+                option21.innerHTML="Madhepura";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Madhubani";
+                option22.innerHTML="Madhubani";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Munger";
+                option23.innerHTML="Munger";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Muzaffarpur";
+                option24.innerHTML="Muzaffarpur";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Nalanda";
+                option25.innerHTML="Nalanda";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Nawada";
+                option26.innerHTML="Nawada";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Patna";
+                option27.innerHTML="Patna";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement("option");
+                option28.value="Purnia";
+                option28.innerHTML="Purnia";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Rohtas";
+                option29.innerHTML="Rohtas";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Saharsa";
+                option30.innerHTML="Saharsa";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Samastipur";
+                option31.innerHTML="Samastipur";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Saran";
+                option32.innerHTML="Saran";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Sheikhpura";
+                option33.innerHTML="Sheikhpura";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Sheohar";
+                option34.innerHTML="Sheohar";
+                select2.appendChild(option34);
+                // Option 35
+                let option35=document.createElement("option");
+                option35.value="Sitamarhi";
+                option35.innerHTML="Sitamarhi";
+                select2.appendChild(option35);
+                // Option 36
+                let option36=document.createElement("option");
+                option36.value="Siwan";
+                option36.innerHTML="Siwan";
+                select2.appendChild(option36);
+                // Option 37
+                let option37=document.createElement("option");
+                option37.value="Supaul";
+                option37.innerHTML="Supaul";
+                select2.appendChild(option37);
+                // Option 38
+                let option38=document.createElement("option");
+                option38.value="Vaishali";
+                option38.innerHTML="Vaishali";
+                select2.appendChild(option38);
+                // Option 39
+                let option39=document.createElement("option");
+                option39.value="WestChamparan";
+                option39.innerHTML="West Champaran";
+                select2.appendChild(option39);
+            }
+            else if(select1=="Chhattisgarh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Balod";
+                option1.innerHTML="Balod";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="BalodaBazar";
+                option2.innerHTML="Baloda Bazar";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Balrampur";
+                option3.innerHTML="Balrampur";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Bastar";
+                option4.innerHTML="Bastar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Bemetara";
+                option5.innerHTML="Bemetara";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Bijapur";
+                option6.innerHTML="Bijapur";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Bilaspur";
+                option7.innerHTML="Bilaspur";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Dantewada";
+                option8.innerHTML="Dantewada";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Dhamtari";
+                option9.innerHTML="Dhamtari";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Durg";
+                option10.innerHTML="Durg";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Gariaband";
+                option12.innerHTML="Gariaband";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Gaurella";
+                option13.innerHTML="Gaurella";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Janjgir";
+                option14.innerHTML="Janjgir";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Jashpur";
+                option15.innerHTML="Jashpur";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Kabirdham";
+                option16.innerHTML="Kabirdham";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Kanker";
+                option17.innerHTML="Kanker";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Khairagarh";
+                option18.innerHTML="Khairagarh";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Kondagaon";
+                option19.innerHTML="Kondagaon";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Korba";
+                option20.innerHTML="Korba";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Koriya";
+                option21.innerHTML="Koriya";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Mahasamund";
+                option22.innerHTML="Mahasamund";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Manendragarh";
+                option23.innerHTML="Manendragarh";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Mohla";
+                option24.innerHTML="Mohla";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Mungeli";
+                option25.innerHTML="Mungeli";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Narayanpur";
+                option26.innerHTML="Narayanpur";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Raigarh";
+                option27.innerHTML="Raigarh";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement("option");
+                option28.value="Raipur";
+                option28.innerHTML="Raipur";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Rajnandgaon";
+                option29.innerHTML="Rajnandgaon";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Sakti";
+                option30.innerHTML="Sakti";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Sarangarh";
+                option31.innerHTML="Sarangarh";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Sukma";
+                option32.innerHTML="Sukma";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Surajpur";
+                option33.innerHTML="Surajpur";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Surguja";
+                option34.innerHTML="Surguja";
+                select2.appendChild(option34);
+            }
+            else if(select1=="Goa"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="NorthGoa";
+                option1.innerHTML="North Goa";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="SouthGoa";
+                option2.innerHTML="South Goa";
+                select2.appendChild(option2);
+            }
+            else if(select1=="Gujrat"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ahmedabad";
+                option1.innerHTML="Ahmedabad";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Amreli";
+                option2.innerHTML="Amreli";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Anand";
+                option3.innerHTML="Anand";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Aravalli";
+                option4.innerHTML="Aravalli";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Banaskantha";
+                option5.innerHTML="Banaskantha";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Bharuch";
+                option6.innerHTML="Bharuch";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Bhavnagar";
+                option7.innerHTML="Bhavnagar";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Botad";
+                option8.innerHTML="Botad";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="ChhotaUdaipur";
+                option9.innerHTML="Chhota Udaipur";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Dahod";
+                option10.innerHTML="Dahod";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Dang";
+                option12.innerHTML="Dang";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Dwarka";
+                option13.innerHTML="Dwarka";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Gandhinagar";
+                option14.innerHTML="Gandhinagar";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="GirSomnath";
+                option15.innerHTML="Gir Somnath";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Jamnagar";
+                option16.innerHTML="Jamnagar";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Junagarh";
+                option17.innerHTML="Junagarh";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Kheda";
+                option18.innerHTML="Kheda";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Kutch";
+                option19.innerHTML="Kutch";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Mahisagar";
+                option20.innerHTML="Mahisagar";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Mehsana";
+                option21.innerHTML="Mehsana";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Morbi";
+                option22.innerHTML="Morbi";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Narmada";
+                option23.innerHTML="Narmada";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Navsari";
+                option24.innerHTML="Navsari";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Panchmahal";
+                option25.innerHTML="Panchmahal";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Patan";
+                option26.innerHTML="Patan";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Porbandar";
+                option27.innerHTML="Porbandar";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement("option");
+                option28.value="Rajkot";
+                option28.innerHTML="Rajkot";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Sabarkantha";
+                option29.innerHTML="Sabarkantha";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Surat";
+                option30.innerHTML="Surat";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Surendranagar";
+                option31.innerHTML="Surendranagar";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Tapi";
+                option32.innerHTML="Tapi";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Vadodara";
+                option33.innerHTML="Vadodara";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Valsad";
+                option34.innerHTML="Valsad";
+                select2.appendChild(option34);
+            }
+            else if(select1=="Haryana"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ambala";
+                option1.innerHTML="Ambala";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Bhiwani";
+                option2.innerHTML="Bhiwani";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="CharkhiDadri";
+                option3.innerHTML="Charkhi Dadri";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Faridabad";
+                option4.innerHTML="Faridabad";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Fatehpur";
+                option5.innerHTML="Fatehpur";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Gurugram";
+                option6.innerHTML="Gurugram";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Hisar";
+                option7.innerHTML="Hisar";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Jhajjar";
+                option8.innerHTML="Jhajjar";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Jind";
+                option9.innerHTML="Jind";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Kaithal";
+                option10.innerHTML="Kaithal";
+                select2.appendChild(option10);
+                // Option 11
+                let option12=document.createElement("option");
+                option12.value="Karnal";
+                option12.innerHTML="Karnal";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Kurukshetra";
+                option13.innerHTML="Kurukshetra";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Mahendragarh";
+                option14.innerHTML="Mahendragarh";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Nuh";
+                option15.innerHTML="Nuh";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Palwal";
+                option16.innerHTML="Palwal";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Panchkula";
+                option17.innerHTML="Panchkula";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Panipat";
+                option18.innerHTML="Panipat";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Rewari";
+                option19.innerHTML="Rewari";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Rohtak";
+                option20.innerHTML="Rohtak";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Sirsa";
+                option21.innerHTML="Sirsa";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Sonipat";
+                option22.innerHTML="Sonipat";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Yamunanagar";
+                option23.innerHTML="Yamunanagar";
+                select2.appendChild(option23);
+            }
+            else if(select1=="HimachalPradesh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Bilaspur";
+                option1.innerHTML="Bilaspur";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Chamba";
+                option2.innerHTML="Chamba";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Hamirpur";
+                option3.innerHTML="Hamirpur";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Kangra";
+                option4.innerHTML="Kangra";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Kinnaur";
+                option5.innerHTML="Kinnaur";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Kullu";
+                option6.innerHTML="Kullu";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Lahaul and Spiti";
+                option7.innerHTML="Lahaul and Spiti";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Mandi";
+                option8.innerHTML="Mandi";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Shimla";
+                option9.innerHTML="Shimla";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Sirmaur";
+                option10.innerHTML="Sirmaur";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Solan";
+                option11.innerHTML="Solan";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Una";
+                option12.innerHTML="Una";
+                select2.appendChild(option12);
+            }
+            else if(select1=="Jharkhand"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Bokaro";
+                option1.innerHTML="Bokaro";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Chatra";
+                option2.innerHTML="Chatra";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Deoghar";
+                option3.innerHTML="Deoghar";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Dhanbad";
+                option4.innerHTML="Dhanbad";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Dumka";
+                option5.innerHTML="Dumka";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="EastSingbhum";
+                option6.innerHTML="East Singbhum";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Garhwa";
+                option7.innerHTML="Garhwa";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Giridih";
+                option8.innerHTML="Giridih";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Godda";
+                option9.innerHTML="Godda";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Gumla";
+                option10.innerHTML="Gumla";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Hazaribagh";
+                option11.innerHTML="Hazaribagh";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Jamtara";
+                option12.innerHTML="Jamtara";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Khunti";
+                option13.innerHTML="Khunti";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Koderma";
+                option14.innerHTML="Koderma";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Latehar";
+                option15.innerHTML="Latehar";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Lohardaga";
+                option16.innerHTML="Lohardaga";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Pakur";
+                option17.innerHTML="Pakur";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Palamu";
+                option18.innerHTML="Palamu";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Ramgarh";
+                option19.innerHTML="Ramgarh";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Ranchi";
+                option20.innerHTML="Ranchi";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Sahibganj";
+                option21.innerHTML="Sahibganj";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Saraikela";
+                option22.innerHTML="Saraikela";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Simdega";
+                option23.innerHTML="Simdega";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="WestSingbhum";
+                option24.innerHTML="West Singbhum";
+                select2.appendChild(option24);
+            }
+            else if(select1=="Karnataka"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Bagalkote";
+                option1.innerHTML="Bagalkote";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Ballary";
+                option2.innerHTML="Ballary";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Belagavi";
+                option3.innerHTML="Belagavi";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Bengaluru";
+                option4.innerHTML="Bengaluru";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Bidar";
+                option5.innerHTML="Bidar";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Chamarajanagara";
+                option6.innerHTML="Chamarajanagara";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Chikkaballapura";
+                option7.innerHTML="Chikkaballapura";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Chikkamagaluru";
+                option8.innerHTML="Chikkamagaluru";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Chitradurga";
+                option9.innerHTML="Chitradurga";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="DakshinaKannada";
+                option10.innerHTML="Dakshina Kannada";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Davanagere";
+                option11.innerHTML="Davanagere";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Dharwad";
+                option12.innerHTML="Dharwad";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Gadag";
+                option13.innerHTML="Gadag";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Hassan";
+                option14.innerHTML="Hassan";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Haveri";
+                option15.innerHTML="Haveri";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Kalaburagi";
+                option16.innerHTML="Kalaburagi";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Kodagu";
+                option17.innerHTML="Kodagu";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Kolara";
+                option18.innerHTML="Kolara";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Koppara";
+                option19.innerHTML="Koppara";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Mandya";
+                option20.innerHTML="Mandya";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Mysuri";
+                option21.innerHTML="Mysuri";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Raichuru";
+                option22.innerHTML="Raichuru";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Ramanagara";
+                option23.innerHTML="Ramanagara";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Shivamogga";
+                option24.innerHTML="Shivamogga";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Tumakuru";
+                option25.innerHTML="Tumakuru";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=createElement("option");
+                option26.value="Udupi";
+                option26.innerHTML="Udupi";
+                select2.appendChild(option26);
+                // Option27
+                let option27=createElement("option");
+                option27.value="UttaraKannada";
+                option27.innerHTML="Uttara Kannada";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=createElement("option");
+                option28.value="Vijayanagara";
+                option28.innerHTML="Vijayanagara";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=createElement("option");
+                option29.value="Vijayapura";
+                option29.innerHTML="Vijayapura";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=createElement("option");
+                option30.value="Yadgiri";
+                option30.innerHTML="Yadgiri";
+                select2.appendChild(option30);
+            }
+            else if(select1=="Kerala"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Alappuzha";
+                option1.innerHTML="Alappuzha";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Ernakulam";
+                option2.innerHTML="Ernakulam";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Idukki";
+                option3.innerHTML="Idukki";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Kannur";
+                option4.innerHTML="Kannur";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Kasaragod";
+                option5.innerHTML="Kasaragod";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Kollam";
+                option6.innerHTML="Kollam";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Kottayam";
+                option7.innerHTML="Kottayam";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Kozhikode";
+                option8.innerHTML="Kozhikode";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Malappuram";
+                option9.innerHTML="Malappuram";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Palakkad";
+                option10.innerHTML="Palakkad";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Pathanathitta";
+                option11.innerHTML="Pathanathitta";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Thiruvananthapuram";
+                option12.innerHTML="Thiruvananthapuram";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Thrissur";
+                option13.innerHTML="Thrissur";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Wayanad";
+                option14.innerHTML="Wayanad";
+                select2.appendChild(option14);
+            }
+            else if(select1=="MadhyaPradesh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="AgarMalwa";
+                option1.innerHTML="Agar Malwa";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Alirajpur";
+                option2.innerHTML="Alirajpur";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Anuppur";
+                option3.innerHTML="Anuppur";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Ashoknagar";
+                option4.innerHTML="Ashoknagar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Balaghat";
+                option5.innerHTML="Balaghat";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Barwani";
+                option6.innerHTML="Barwani";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Betul";
+                option7.innerHTML="Betul";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Bhind";
+                option8.innerHTML="Bhind";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Bhopal";
+                option9.innerHTML="Bhopal";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Burhanpur";
+                option10.innerHTML="Burhanpur";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Chhatarpur";
+                option11.innerHTML="Chhatarpur";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Chhindwara";
+                option12.innerHTML="Chhindwara";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Damoh";
+                option13.innerHTML="Damoh";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Datai";
+                option14.innerHTML="Datai";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Dewas";
+                option15.innerHTML="Dewas";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Dhar";
+                option16.innerHTML="Dhar";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Dindori";
+                option17.innerHTML="Dindori";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Guna";
+                option18.innerHTML="Guna";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Gwalior";
+                option19.innerHTML="Gwalior";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Harda";
+                option20.innerHTML="Harda";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Indore";
+                option21.innerHTML="Indore";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Jabalpur";
+                option22.innerHTML="Jabalpur";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Jhabua";
+                option23.innerHTML="Jhabua";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Katni";
+                option24.innerHTML="Katni";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Khandwa";
+                option25.innerHTML="Khandwa";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Khargone";
+                option26.innerHTML="Khargone";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Mandla";
+                option27.innerHTML="Mandla";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Mandsaur";
+                option28.innerHTML="Mandsaur";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Mauganj";
+                option29.innerHTML="Mauganj";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Morena";
+                option30.innerHTML="Morena";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Narmadapuram";
+                option31.innerHTML="Narmadapuram";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Narsinghpur";
+                option32.innerHTML="Narsinghpur";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Neemuch";
+                option33.innerHTML="Neemuch";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Niwari";
+                option34.innerHTML="Niwari";
+                select2.appendChild(option34);
+                // Option 35
+                let option35=document.createElement("option");
+                option35.value="Panna";
+                option35.innerHTML="Panna";
+                select2.appendChild(option35);
+                // Option 36
+                let option36=document.createElement("option");
+                option36.value="Raisen";
+                option36.innerHTML="Raisen";
+                select2.appendChild(option36);
+                // Option 37
+                let option37=document.createElement("option");
+                option37.value="Rajghar";
+                option37.innerHTML="Rajghar";
+                select2.appendChild(option37);
+                // Option 38
+                let option38=document.createElement("option");
+                option38.value="Ratlam";
+                option38.innerHTML="Ratlam";
+                select2.appendChild(option38);
+                // Option 39
+                let option39=document.createElement("option");
+                option39.value="Rewa";
+                option39.innerHTML="Rewa";
+                select2.appendChild(option39);
+                // Option 40
+                let option40=document.createElement("option");
+                option40.value="Sagar";
+                option40.innerHTML="Sagar";
+                select2.appendChild(option40);
+                // Option 41
+                let option41=document.createElement("option");
+                option41.value="Satna";
+                option41.innerHTML="Satna";
+                select2.appendChild(option41);
+                // Option 42
+                let option42=document.createElement("option");
+                option42.value="Sehore";
+                option42.innerHTML="Sehore";
+                select2.appendChild(option42)
+                // Option 43
+                let option43=document.createElement("option");
+                option43.value="Seoni";
+                option43.innerHTML="Seoni";
+                select2.appendChild(option43);
+                // Option 44
+                let option44=document.createElement("option");
+                option44.value="Shahdol";
+                option44.innerHTML="Shahdol";
+                select2.appendChild(option44);
+                // Option 45
+                let option45=document.createElement("option");
+                option45.value="Shajapur";
+                option45.innerHTML="Shajapur";
+                select2.appendChild(option45);
+                // Option 46
+                let option46=document.createElement("option");
+                option46.value="Sheopur";
+                option46.innerHTML="Sheopur";
+                select2.appendChild(option46);
+                // Option 47
+                let option47=document.createElement("option");
+                option47.value="Shivpuri";
+                option47.innerHTML="Shivpuri";
+                select2.appendChild(option47);
+                // Option 48
+                let option48=document.createElement("option");
+                option48.value="Sidhi";
+                option48.innerHTML="Sidhi";;
+                select2.appendChild(option48);
+                // Option 49
+                let option49=document.createElement("option");
+                option49.value="Singrauli";
+                option49.innerHTML="Singrauli";
+                select2.appendChild(option49);
+                // Option 50
+                let option50=document.createElement("option");
+                option50.value="Tikamgarh";
+                option50.innerHTML="Tikamgarh";
+                select2.appendChild(option50);
+                // Option 51
+                let option51=document.createElement("option");
+                option51.value="Ujjain";
+                option51.innerHTML="Ujjain";
+                select2.appendChild(option51);
+                // Option 52
+                let option52=document.createElement("option");
+                option52.value="Umaria";
+                option52.innerHTML="Umaria";
+                select2.appendChild(option52);
+                // Option 53
+                let option53=document.createElement("option");
+                option53.value="Vidisha";
+                option53.innerHTML="Vidisha";
+                select2.appendChild(option53);
+            }
+            else if(select1=="Maharashtra"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ahmednagar";
+                option1.innerHTML="Ahmednagar";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Akola";
+                option2.innerHTML="Akola";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Amravati";
+                option3.innerHTML="Amravati";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="ChattrapatiSambhajiNagar";
+                option4.innerHTML="Chattrapati Sambhaji Nagar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Beed";
+                option5.innerHTML="Beed";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Bhandara";
+                option6.innerHTML="Bhandara";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Buldhana";
+                option7.innerHTML="Buldhana";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Chandrapur";
+                option8.innerHTML="Chandrapur";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Dhule";
+                option9.innerHTML="Dhule";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Gadchiroli";
+                option10.innerHTML="Gadchiroli";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Gondia";
+                option11.innerHTML="Gondia";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Hingoli";
+                option12.innerHTML="Hingoli";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Jalgaon";
+                option13.innerHTML="Jalgaon";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Jalna";
+                option14.innerHTML="Jalna";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Kolhapur";
+                option15.innerHTML="Kolhapur";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Latur";
+                option16.innerHTML="Latur";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Mumbai";
+                option17.innerHTML="Mumbai";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Nagpur";
+                option18.innerHTML="Nagpur";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Nanded";
+                option19.innerHTML="Nanded";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Nandurbar";
+                option20.innerHTML="Nandurbar";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Nashik";
+                option21.innerHTML="Nashik";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Dharashiv";
+                option22.innerHTML="Dharashiv";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Palghar";
+                option23.innerHTML="Palghar";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Parbhani";
+                option24.innerHTML="Parbhani";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Pune";
+                option25.innerHTML="Pune";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Raigad";
+                option26.innerHTML="Raigad";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Ratnagiri";
+                option27.innerHTML="Ratnagiri";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Sangli";
+                option28.innerHTML="Sangli";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Satara";
+                option29.innerHTML="Satara";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Sindhudurg";
+                option30.innerHTML="Sindhudurg";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Solapur";
+                option31.innerHTML="Solapur";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Thane";
+                option32.innerHTML="Thane";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Wardha";
+                option33.innerHTML="Wardha";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Washim";
+                option34.innerHTML="Washim";
+                select2.appendChild(option34);
+                // Option 35
+                let option35=document.createElement("option");
+                option35.value="Yavatmal";
+                option35.innerHTML="Yavatmal";
+                select2.appendChild(option35);
+            }
+            else if(select1=="Manipur"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Bishnupur";
+                option1.innerHTML="Bishnupur";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Chandel";
+                option2.innerHTML="Chandel";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Churachandpur";
+                option3.innerHTML="Churachandpur";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="ImphalEast";
+                option4.innerHTML="Imphal East";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="ImphalWest";
+                option5.innerHTML="Imphal West";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Jiribam";
+                option6.innerHTML="Jiribam";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Kakching";
+                option7.innerHTML="Kakching";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Kamjong";
+                option8.innerHTML="Kamjong";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Kangpokpi";
+                option9.innerHTML="Kangpokpi";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Noney";
+                option10.innerHTML="Noney";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Pherzawl";
+                option11.innerHTML="Pherzawl";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Senapati";
+                option12.innerHTML="Senapati";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Tamenglong";
+                option13.innerHTML="Tamenglong";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Tengnoupal";
+                option14.innerHTML="Tengnoupal";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Thoubal";
+                option15.innerHTML="Thoubal";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Ukhrul";
+                option16.innerHTML="Ukhrul";
+                select2.appendChild(option16);
+            }
+            else if(select1=="Meghalaya"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="EastGaroHills";
+                option1.innerHTML="East Garo Hills";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="EastJaintiaHills";
+                option2.innerHTML="East Jaintia Hills";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="EastKhasiHills";
+                option3.innerHTML="East Khasi Hills";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="EasternWestKhasiHills";
+                option4.innerHTML="Eastern West Khasi Hills";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="NorthGaroHills";
+                option5.innerHTML="North Garo Hills";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="RiBhoi";
+                option6.innerHTML="Ri Bhoi";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="SouthGaroHills";
+                option7.innerHTML="South Garo Hills";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="SouthWestGaroHills";
+                option8.innerHTML="South West Garo Hills";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="SouthWestKhasiHills";
+                option9.innerHTML="South West Khasi Hills";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="WestGaroHills";
+                option10.innerHTML="West Garo Hills";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="WestJaintiaHills";
+                option11.innerHTML="West Jaintia Hills";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="WestKhasiHills";
+                option12.innerHTML="West Khasi Hills";
+                select2.appendChild(option12);
+            }
+            else if(select1=="Mizoram"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Aizawl";
+                option1.innerHTML="Aizawl";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Champhai";
+                option2.innerHTML="Champhai";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Hnahthial";
+                option3.innerHTML="Hnahthial";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Khawzawl";
+                option4.innerHTML="Khawzawl";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Kolasib";
+                option5.innerHTML="Kolasib";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Lawngtlia";
+                option6.innerHTML="Lawngtlia";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Lunglei";
+                option7.innerHTML="Lunglei";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Mamit";
+                option8.innerHTML="Mamit";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Saiha";
+                option9.innerHTML="Saiha";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Saitual";
+                option10.innerHTML="Saitual";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Serchhip";
+                option11.innerHTML="Serchhip";
+                select2.appendChild(option11);
+            }
+            else if(select1=="Nagaland"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ch&uuml;moukedima";
+                option1.innerHTML="Ch&uuml;moukedima";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Dimapur";
+                option2.innerHTML="Dimapur";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Kiphire";
+                option3.innerHTML="Kiphire";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Kohima";
+                option4.innerHTML="Kohima";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Longleng";
+                option5.innerHTML="Longleng";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Mokokchung";
+                option6.innerHTML="Mokokchung";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Mon";
+                option7.innerHTML="Mon";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Niuland";
+                option8.innerHTML="Niuland";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Noklak";
+                option9.innerHTML="Noklak";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Peren";
+                option10.innerHTML="Peren";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Phek";
+                option11.innerHTML="Phek";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Shamator";
+                option12.innerHTML="Shamator";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Tseminy&uuml;";
+                option13.innerHTML="Tseminy&uuml;";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Tuensang";
+                option14.innerHTML="Tuensang";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Wokha";
+                option15.innerHTML="Wokha";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Z&uuml;nheboto";
+                option16.innerHTML="Z&uuml;nheboto";
+                select2.appendChild(option16);
+            }
+            else if(select1=="Odisha"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Angul";
+                option1.innerHTML="Angul";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Balangir";
+                option2.innerHTML="Balangir";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Balasore";
+                option3.innerHTML="Balasore";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Bargarh";
+                option4.innerHTML="Bargarh";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Bhadrak";
+                option5.innerHTML="Bhadrak";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Boudh";
+                option6.innerHTML="Boudh";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Cuttack";
+                option7.innerHTML="Cuttack";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Debagarh";
+                option8.innerHTML="Debagarh";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Dhenkanal";
+                option9.innerHTML="Dhenkanal";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Gajapati";
+                option10.innerHTML="Gajapati";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Ganjam";
+                option11.innerHTML="Ganjam";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Jagatsinghapur";
+                option12.innerHTML="Jagatsinghapur";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Jajpur";
+                option13.innerHTML="Jajpur";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Jharsuguda";
+                option14.innerHTML="Jharsuguda";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Kalahandi";
+                option15.innerHTML="Kalahandi";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Kendrapara";
+                option16.innerHTML="Kendrapara";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Kendujhar";
+                option17.innerHTML="Kendujhar";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Khordha";
+                option18.innerHTML="Khordha";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Koraput";
+                option19.innerHTML="Koraput";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Malkangiri";
+                option20.innerHTML="Malkangiri";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Mayurbhanj";
+                option21.innerHTML="Mayurbhanj";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Nabarangpur";
+                option22.innerHTML="Nabarangpur";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Nayagarh";
+                option23.innerHTML="Nayagarh";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Nuapara";
+                option24.innerHTML="Nuapara";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Puri";
+                option25.innerHTML="Puri";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Rayagada";
+                option26.innerHTML="Rayagada";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Sambalpur";
+                option27.innerHTML="Sambalpur";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Subarnapur";
+                option28.innerHTML="Subarnapur";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Sundergarh";
+                option29.innerHTML="Sundergarh";
+                select2.appendChild(option29);
+            }
+            else if(select1=="Punjab"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Amritsar";
+                option1.innerHTML="Amritsar";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Barnala";
+                option2.innerHTML="Barnala";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Bathinda";
+                option3.innerHTML="Bathinda";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Faridkot";
+                option4.innerHTML="Faridkot";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="FatehgarhSahib";
+                option5.innerHTML="Fatehgarh Sahib";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Firozpur";
+                option6.innerHTML="Firozpur";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Fazilka";
+                option7.innerHTML="Fazilka";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Gurdaspur";
+                option8.innerHTML="Gurdaspur";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Hoshiarpur";
+                option9.innerHTML="Hoshiarpur";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Jalandhar";
+                option10.innerHTML="Jalandhar";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Kapurthala";
+                option11.innerHTML="Kapurthala";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Ludhiana";
+                option12.innerHTML="Ludhiana";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Malerkotla";
+                option13.innerHTML="Malerkotla";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Mansa";
+                option14.innerHTML="Mansa";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Moga";
+                option15.innerHTML="Moga";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="SriMuktsarSahib";
+                option16.innerHTML="Sri Muktsar Sahib";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Pathankot";
+                option17.innerHTML="Pathankot";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Patiala";
+                option18.innerHTML="Patiala";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Rupnagar";
+                option19.innerHTML="Rupnagar";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="SahibzadaAjitSinghNagar";
+                option20.innerHTML="Sahibzada Ajit Singh Nagar";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Sangrur";
+                option21.innerHTML="Sangrur";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="ShahidBhagatSinghNagar";
+                option22.innerHTML="Shahid Bhagat Singh Nagar";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="TarnTaran";
+                option23.innerHTML="Tarn Taran";
+                select2.appendChild(option23);
+            }
+            else if(select1=="Rajasthan"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ajmer";
+                option1.innerHTML="Ajmer";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Alwar";
+                option2.innerHTML="Alwar";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Banswara";
+                option3.innerHTML="Banswara";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Baran";
+                option4.innerHTML="Baran";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Barmer";
+                option5.innerHTML="Barmer";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Bharatpur";
+                option6.innerHTML="Bharatpur";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Bhilwara";
+                option7.innerHTML="Bhilwara";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Bikaner";
+                option8.innerHTML="Bikaner";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Bundi";
+                option9.innerHTML="Bundi";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Chittorgarh";
+                option10.innerHTML="Chittorgarh";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Churu";
+                option11.innerHTML="Churu";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Dausa";
+                option12.innerHTML="Dausa";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Dholpur";
+                option13.innerHTML="Dholpur";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Dungarpur";
+                option14.innerHTML="Dungarpur";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Hanumangarh";
+                option15.innerHTML="Hanumangarh";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Jaipur";
+                option16.innerHTML="Jaipur";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Jaisalmer";
+                option17.innerHTML="Jaisalmer";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Jalore";
+                option18.innerHTML="Jalore";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Jhalawar";
+                option19.innerHTML="Jhalawar";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Jhunjhunu";
+                option20.innerHTML="Jhunjhunu";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Jodhpur";
+                option21.innerHTML="Jodhpur";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Karauli";
+                option22.innerHTML="Karauli";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Kota";
+                option23.innerHTML="Kota";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Nagaur";
+                option24.innerHTML="Nagaur";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Pali";
+                option25.innerHTML="Pali";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Pratapgarh";
+                option26.innerHTML="Pratapgarh";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Rajsamand";
+                option27.innerHTML="Rajsamand";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="SawaiMadhopur";
+                option28.innerHTML="Sawai Madhopur";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Sikar";
+                option29.innerHTML="Sikar";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Sirohi";
+                option30.innerHTML="Sirohi";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="SriGanganagar";
+                option31.innerHTML="Sri Ganganagar";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Tonk";
+                option32.innerHTML="Tonk";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Udaipur";
+                option33.innerHTML="Udaipur";
+                select2.appendChild(option33);
+            }
+            else if(select1=="Sikkim"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Gangtok";
+                option1.innerHTML="Gangtok";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Gyalshing";
+                option2.innerHTML="Gyalshing";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Mangan";
+                option3.innerHTML="Mangan";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Namchi";
+                option4.innerHTML="Namchi";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Pakyong";
+                option5.innerHTML="Pakyong";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Soreng";
+                option6.innerHTML="Soreng";
+                select2.appendChild(option6);
+            }
+            else if(select1=="TamilNadu"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Ariyalur";
+                option1.innerHTML="Ariyalur";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Chengalpattu";
+                option2.innerHTML="Chengalpattu";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Chennai";
+                option3.innerHTML="Chennai";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Coimbatore";
+                option4.innerHTML="Coimbatore";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Cuddalore";
+                option5.innerHTML="Cuddalore";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Dharmapuri";
+                option6.innerHTML="Dharmapuri";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Dindigul";
+                option7.innerHTML="Dindigul";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Erode";
+                option8.innerHTML="Erode";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Kallakurichi";
+                option9.innerHTML="Kallakurichi";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Kanchipuram";
+                option10.innerHTML="Kanchipuram";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Kanniyakumari";
+                option11.innerHTML="Kanniyakumari";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Karur";
+                option12.innerHTML="Karur";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Krishnagiri";
+                option13.innerHTML="Krishnagiri";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Madurai";
+                option14.innerHTML="Madurai";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Mayiladuthurai";
+                option15.innerHTML="Mayiladuthurai";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Nagapattinam";
+                option16.innerHTML="Nagapattinam";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Namakkal";
+                option17.innerHTML="Namakkal";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Nilgiris";
+                option18.innerHTML="Nilgiris";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Perambalur";
+                option19.innerHTML="Perambalur";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Pudukkottai";
+                option20.innerHTML="Pudukkottai";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Ramanathapuram";
+                option21.innerHTML="Ramanathapuram";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Ranipet";
+                option22.innerHTML="Ranipet";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Salem";
+                option23.innerHTML="Salem";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Sivagangai";
+                option24.innerHTML="Sivagangai";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Tenkasi";
+                option25.innerHTML="Tenkasi";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Thanjavur";
+                option26.innerHTML="Thanjavur";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Theni";
+                option27.innerHTML="Theni";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Thoothkudi";
+                option28.innerHTML="Thoothkudi";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Tiruchirappalli";
+                option29.innerHTML="Tiruchirappalli";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Tirunelveli";
+                option30.innerHTML="Tirunelveli";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Tirupathur";
+                option31.innerHTML="Tirupathur";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Tiruppur";
+                option32.innerHTML="Tiruppur";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Tiruvallur";
+                option33.innerHTML="Tiruvallur";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Tiruvannamalai";
+                option34.innerHTML="Tiruvannamalai";
+                select2.appendChild(option34);
+                // Option 35
+                let option35=document.createElement("option");
+                option35.value="Tiruvarur";
+                option35.innerHTML="Tiruvarur";
+                select2.appendChild(option35);
+                // Option 36
+                let option36=document.createElement("option");
+                option36.value="Vellore";
+                option36.innerHTML="Vellore";
+                select2.appendChild(option36);
+                // Option 37
+                let option37=document.createElement("option");
+                option37.value="Viluppuram";
+                option37.innerHTML="Viluppuram";
+                select2.appendChild(option37);
+                // Option 38
+                let option38=document.createElement("option");
+                option38.value="Virudhunagar";
+                option38.innerHTML="Virudhunagar";
+                select2.appendChild(option38);
+            }
+            else if(select1=="Telangana"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Adilabad";
+                option1.innerHTML="Adilabad";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Bhadradri";
+                option2.innerHTML="Bhadradri";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Hanamkonda";
+                option3.innerHTML="Hanamkonda";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Hydrabad";
+                option4.innerHTML="Hydrabad";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Jagitial";
+                option5.innerHTML="Jagitial";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Jangaon";
+                option6.innerHTML="Jangaon";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Jayashankar";
+                option7.innerHTML="Jayashankar";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Jogulamba";
+                option8.innerHTML="Jogulamba";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Kamareddy";
+                option9.innerHTML="Kamareddy";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Karimnagar";
+                option10.innerHTML="Karimnagar";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Khammam";
+                option11.innerHTML="Khammam";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="KumaramBheem";
+                option12.innerHTML="Kumaram Bheem";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Mahabubabad";
+                option13.innerHTML="Mahabubabad";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Mahabubnagar";
+                option14.innerHTML="Mahabubnagar";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Mancherial";
+                option15.innerHTML="Mancherial";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Medak";
+                option16.innerHTML="Medak";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="MedchalMalkajgiri";
+                option17.innerHTML="Medchal Malkajgiri";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Mulugu";
+                option18.innerHTML="Mulugu";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Nagarkurnool";
+                option19.innerHTML="Nagarkurnool";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Nalgonda";
+                option20.innerHTML="Nalgonda";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Narayanpet";
+                option21.innerHTML="Narayanpet";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Nirmal";
+                option22.innerHTML="Nirmal";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Nizamabad";
+                option23.innerHTML="Nizamabad";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Peddapalli";
+                option24.innerHTML="Peddapalli";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="RajannaSircilla";
+                option25.innerHTML="Rajanna Sircilla";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="RangaReddy";
+                option26.innerHTML="Ranga Reddy";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Sangareddy";
+                option27.innerHTML="Sangareddy";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Siddipet";
+                option28.innerHTML="Siddipet";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="Suryapet";
+                option29.innerHTML="Suryapet";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Vikarabad";
+                option30.innerHTML="Vikarabad";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Wanaparthy";
+                option31.innerHTML="Wanaparthy";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Warangal";
+                option32.innerHTML="Warangal";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Yadadri";
+                option33.innerHTML="Yadadri";
+                select2.appendChild(option33);
+            }
+            else if(select1=="Tripura"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Dhalai";
+                option1.innerHTML="Dhalai";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Gomati";
+                option2.innerHTML="Gomati";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Khowai";
+                option3.innerHTML="Khowai";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="NorthTripura";
+                option4.innerHTML="North Tripura";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Sipahijala";
+                option5.innerHTML="Sipahijala";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="SouthTripura";
+                option6.innerHTML="South Tripura";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Unakoti";
+                option7.innerHTML="Unakoti";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="WestTripura";
+                option8.innerHTML="West Tripura";
+                select2.appendChild(option8);
+            }
+            else if(select1=="Uttarakhand"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Almora";
+                option1.innerHTML="Almora";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Bageshwar";
+                option2.innerHTML="Bageshwar";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Chamoli";
+                option3.innerHTML="Chamoli";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Champawat";
+                option4.innerHTML="Champawat";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Dehradun";
+                option5.innerHTML="Dehradun";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Haridwar";
+                option6.innerHTML="Haridwar";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Nainital";
+                option7.innerHTML="Nainital";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="PauriGarhwal";
+                option8.innerHTML="Pauri Garhwal";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Pithoragarh";
+                option9.innerHTML="Pithoragarh";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Rudraprayag";
+                option10.innerHTML="Rudraprayag";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="TehriGarhwal";
+                option11.innerHTML="Tehri Garhwal";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="UdhamSinghNagar";
+                option12.innerHTML="Udham Singh Nagar";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Uttarkashi";
+                option13.innerHTML="Uttarkashi";
+                select2.appendChild(option13);
+            }
+            else if(select1=="UttarPradesh"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Agra";
+                option1.innerHTML="Agra";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Aligarh";
+                option2.innerHTML="Aligarh";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Prayagraj";
+                option3.innerHTML="Prayagraj";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="AmbedkarNagar";
+                option4.innerHTML="Ambedkar Nagar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Amethi";
+                option5.innerHTML="Amethi";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Amroha";
+                option6.innerHTML="Amroha";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Auraiya";
+                option7.innerHTML="Auraiya";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Azamgarh";
+                option8.innerHTML="Azamgarh";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Badaun";
+                option9.innerHTML="Badaun";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Bagpat";
+                option10.innerHTML="Bagpat";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Bahraich";
+                option11.innerHTML="Bahraich";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Ballia";
+                option12.innerHTML="Ballia";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Balrampur";
+                option13.innerHTML="Balrampur";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Banda";
+                option14.innerHTML="Banda";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Barabanki";
+                option15.innerHTML="Barabanki";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Bareilly";
+                option16.innerHTML="Bareilly";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Basti";
+                option17.innerHTML="Basti";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Bijnor";
+                option18.innerHTML="Bijnor";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Bulandshahr";
+                option19.innerHTML="Bulandshahr";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Chandauli";
+                option20.innerHTML="Chandauli";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Chitrakoot";
+                option21.innerHTML="Chitrakoot";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="Deoria";
+                option22.innerHTML="Deoria";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="Etah";
+                option23.innerHTML="Etah";
+                select2.appendChild(option23);
+                // Option 24
+                let option24=document.createElement("option");
+                option24.value="Etawah";
+                option24.innerHTML="Etawah";
+                select2.appendChild(option24);
+                // Option 25
+                let option25=document.createElement("option");
+                option25.value="Faizabad";
+                option25.innerHTML="Faizabad";
+                select2.appendChild(option25);
+                // Option 26
+                let option26=document.createElement("option");
+                option26.value="Farrukhabad";
+                option26.innerHTML="Farrukhabad";
+                select2.appendChild(option26);
+                // Option 27
+                let option27=document.createElement("option");
+                option27.value="Fatehpur";
+                option27.innerHTML="Fatehpur";
+                select2.appendChild(option27);
+                // Option 28
+                let option28=document.createElement('option');
+                option28.value="Firozabad";
+                option28.innerHTML="Firozabad";
+                select2.appendChild(option28);
+                // Option 29
+                let option29=document.createElement("option");
+                option29.value="GautamBuddhaNagar";
+                option29.innerHTML="Gautam Buddha Nagar";
+                select2.appendChild(option29);
+                // Option 30
+                let option30=document.createElement("option");
+                option30.value="Ghaziabad";
+                option30.innerHTML="Ghaziabad";
+                select2.appendChild(option30);
+                // Option 31
+                let option31=document.createElement("option");
+                option31.value="Ghazipur";
+                option31.innerHTML="Ghazipur";
+                select2.appendChild(option31);
+                // Option 32
+                let option32=document.createElement("option");
+                option32.value="Gonda";
+                option32.innerHTML="Gonda";
+                select2.appendChild(option32);
+                // Option 33
+                let option33=document.createElement("option");
+                option33.value="Gorakhpur";
+                option33.innerHTML="Gorakhpur";
+                select2.appendChild(option33);
+                // Option 34
+                let option34=document.createElement("option");
+                option34.value="Hamirpur";
+                option34.innerHTML="Hamirpur";
+                select2.appendChild(option34);
+                // Option 35
+                let option35=document.createElement("option");
+                option35.value="Hapur";
+                option35.innerHTML="Hapur";
+                select2.appendChild(option35);
+                // Option 36
+                let option36=document.createElement("option");
+                option36.value="Hardoi";
+                option36.innerHTML="Hardoi";
+                select2.appendChild(option36);
+                // Option 37
+                let option37=document.createElement("option");
+                option37.value="Hathras";
+                option37.innerHTML="Hathras";
+                select2.appendChild(option37);
+                // Option 38
+                let option38=document.createElement("option");
+                option38.value="Jalaun";
+                option38.innerHTML="Jalaun";
+                select2.appendChild(option38);
+                // Option 39
+                let option39=document.createElement("option");
+                option39.value="Jaunpur";
+                option39.innerHTML="Jaunpur";
+                select2.appendChild(option39);
+                // Option 40
+                let option40=document.createElement("option");
+                option40.value="Jhansi";
+                option40.innerHTML="Jhansi";
+                select2.appendChild(option40);
+                // Option 41
+                let option41=document.createElement("option");
+                option41.value="Kannauj";
+                option41.innerHTML="Kannauj";
+                select2.appendChild(option41);
+                // Option 42
+                let option42=document.createElement("option");
+                option42.value="Kanpur";
+                option42.innerHTML="Kanpur";
+                select2.appendChild(option42);
+                // Option 43
+                let option43=document.createElement("option");
+                option43.value="Kasganj";
+                option43.innerHTML="Kasganj";
+                select2.appendChild(option43);
+                // Option 44
+                let option44=document.createElement("option");
+                option44.value="Kaushambi";
+                option44.innerHTML="Kaushambi";
+                select2.appendChild(option44);
+                // Option 45
+                let option45=document.createElement("option");
+                option45.value="Kushinagar";
+                option45.innerHTML="Kushinagar";
+                select2.appendChild(option45);
+                // Option 46
+                let option46=document.createElement("option");
+                option46.value="LakhimpurKehri";
+                option46.innerHTML="Lakhimpur Kehri";
+                select2.appendChild(option46);
+                // Option 47
+                let option47=document.createElement("option");
+                option47.value="Lalitpur";
+                option47.innerHTML="Lalitpur";
+                select2.appendChild(option47);
+                // Option 48
+                let option48=document.createElement("option");
+                option48.value="Lucknow";
+                option48.innerHTML="Lucknow";
+                select2.appendChild(option48);
+                // Option 49
+                let option49=document.createElement("option");
+                option49.value="Maharajganj";
+                option49.innerHTML="Maharajganj";
+                select2.appendChild(option49);
+                // Option 50
+                let option50=document.createElement("option");
+                option50.value="Mahoba";
+                option50.innerHTML="Mahoba";
+                select2.appendChild(option50);
+                // Option 51
+                let option51=document.createElement("option");
+                option51.value="Mainpuri";
+                option51.innerHTML="Mainpuri";
+                select2.appendChild(option51);
+                // Option 52
+                let option52=document.createElement("option");
+                option52.value="Mathura";
+                option52.innerHTML="Mathura";
+                select2.appendChild(option52);
+                // Option 53
+                let option53=document.createElement("option");
+                option53.value="Mau";
+                option53.innerHTML="Mau";
+                select2.appendChild(option53);
+                // Option 54
+                let option54=document.createElement("option");
+                option54.value="Meerut";
+                option54.innerHTML="Meerut";
+                select2.appendChild(option54);
+                // Option 55
+                let option55=document.createElement("option");
+                option55.value="Mirzapur";
+                option55.innerHTML="Mirzapur";
+                select2.appendChild(option55);
+                // Option 56
+                let option56=document.createElement("option");
+                option56.value="Moradabad";
+                option56.innerHTML="Moradabad";
+                select2.appendChild(option56);
+                // Option 57
+                let option57=document.createElement("option");
+                option57.value="Muzaffarnagar";
+                option57.innerHTML="Muzaffarnagar";
+                select2.appendChild(option57);
+                // Option 58
+                let option58=document.createElement("option");
+                option58.value="Pilibhit";
+                option58.innerHTML="Pilibhit";
+                select2.appendChild(option58);
+                // Option 59
+                let option59=document.createElement("option");
+                option59.value="Pratapgarh";
+                option59.innerHTML="Pratapgarh";
+                select2.appendChild(option59);
+                // Option 60
+                let option60=document.createElement("option");
+                option60.value="RaeBarelli";
+                option60.innerHTML="Rae Barelli";
+                select2.appendChild(option60);
+                // Option 61
+                let option61=document.createElement("option");
+                option61.value="Rampur";
+                option61.innerHTML="Rampur";
+                select2.appendChild(option61);
+                // Option 62
+                let option62=document.createElement("option");
+                option62.value="Saharanpur";
+                option62.innerHTML="Saharanpur";
+                select2.appendChild(option62);
+                // Option 63
+                let option63=document.createElement("option");
+                option63.value="SantKabirNagar";
+                option63.innerHTML="Sant Kabir Nagar";
+                select2.appendChild(option63);
+                // Option 64
+                let option64=document.createElement("option");
+                option64.value="SantRavidasNagar";
+                option64.innerHTML="Sant Ravidas Nagar";
+                select2.appendChild(option64);
+                // Option 65
+                let option65=document.createElement("option");
+                option65.value="Sambhal";
+                option65.innerHTML="Sambhal";
+                select2.appendChild(option65);
+                // Option 66
+                let option66=document.createElement("option");
+                option66.value="Shahjahanpur";
+                option66.innerHTML="Shahjahanpur";
+                select2.appendChild(option66);
+                // Option 67
+                let option67=document.createElement("option");
+                option67.value="Shamli";
+                option67.innerHTML="Shamli";
+                select2.appendChild(option67);
+                // Option 68
+                let option68=document.createElement("option");
+                option68.value="Shravasti";
+                option68.innerHTML="Shravasti";
+                select2.appendChild(option68);
+                // Option 69
+                let option69=document.createElement("option");
+                option69.value="Siddharthnagar";
+                option69.innerHTML="Siddharthnagar";
+                select2.appendChild(option69);
+                // Option 70
+                let option70=document.createElement("option");
+                option70.value="Sitapur";
+                option70.innerHTML="Sitapur";
+                select2.appendChild(option70);
+                // Option 71
+                let option71=document.createElement("option");
+                option71.value="Sonbhandra";
+                option71.innerHTML="Sonbhandra";
+                select2.appendChild(option71);
+                // Option 72
+                let option72=document.createElement("option");
+                option72.value="Sultanpur";
+                option72.innerHTML="Sultanpur";
+                select2.appendChild(option72);
+                // Option 73
+                let option73=document.createElement("option");
+                option73.value="Unnao";
+                option73.innerHTML="Unnao";
+                select2.appendChild(option73);
+                // Option 74
+                let option74=document.createElement("option");
+                option74.value="Varanasi";
+                option74.innerHTML="Varanasi";
+                select2.appendChild(option74);
+            }
+            else if(select1=="WestBengal"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Alipurduar";
+                option1.innerHTML="Alipurduar";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Bankura";
+                option2.innerHTML="Bankura";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Birbhum";
+                option3.innerHTML="Birbhum";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="CoochBehar";
+                option4.innerHTML="Cooch Behar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="DakshinDinajpur";
+                option5.innerHTML="Dakshin Dinajpur";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Darjeeling";
+                option6.innerHTML="Darjeeling";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Hooghly";
+                option7.innerHTML="Hooghly";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Howrah";
+                option8.innerHTML="Howrah";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Jalpaiguri";
+                option9.innerHTML="Jalpaiguri";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Jhargram";
+                option10.innerHTML="Jhargram";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Kalimpong";
+                option11.innerHTML="Kalimpong";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Kolkata";
+                option12.innerHTML="Kolkata";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Malda";
+                option13.innerHTML="Malda";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Murshidabad";
+                option14.innerHTML="Murshidabad";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Nadia";
+                option15.innerHTML="Nadia";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="North24Pargana";
+                option16.innerHTML="North 24 Pargana";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="PaschimBardhaman";
+                option17.innerHTML="Paschim Bardhaman";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="PashchimMedinipur";
+                option18.innerHTML="Pashchim Medinipur";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="PurbaBardhaman";
+                option19.innerHTML="PurbaBardhaman";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="PurbaMedinipur";
+                option20.innerHTML="Purba Medinipur";
+                select2.appendChild(option20);
+                // Option 21
+                let option21=document.createElement("option");
+                option21.value="Purulia";
+                option21.innerHTML="Purulia";
+                select2.appendChild(option21);
+                // Option 22
+                let option22=document.createElement("option");
+                option22.value="South24Pargana";
+                option22.innerHTML="South 24 Pargana";
+                select2.appendChild(option22);
+                // Option 23
+                let option23=document.createElement("option");
+                option23.value="UttarDinajpur";
+                option23.innerHTML="Uttar Dinajpur";
+                select2.appendChild(option23);
+            }
+            else if(select1=="J&K"){
+                // Option 0
+                let option0=document.createElement("option");
+                option0.value="None";
+                option0.innerHTML="--Select--";
+                select2.appendChild(option0);
+                // Option 1
+                let option1=document.createElement("option");
+                option1.value="Doda";
+                option1.innerHTML="Doda";
+                select2.appendChild(option1);
+                // Option 2
+                let option2=document.createElement("option");
+                option2.value="Jammu";
+                option2.innerHTML="Jammu";
+                select2.appendChild(option2);
+                // Option 3
+                let option3=document.createElement("option");
+                option3.value="Kathua";
+                option3.innerHTML="Kathua";
+                select2.appendChild(option3);
+                // Option 4
+                let option4=document.createElement("option");
+                option4.value="Kishtwar";
+                option4.innerHTML="Kishtwar";
+                select2.appendChild(option4);
+                // Option 5
+                let option5=document.createElement("option");
+                option5.value="Poonch";
+                option5.innerHTML="Poonch";
+                select2.appendChild(option5);
+                // Option 6
+                let option6=document.createElement("option");
+                option6.value="Rajouri";
+                option6.innerHTML="Rajouri";
+                select2.appendChild(option6);
+                // Option 7
+                let option7=document.createElement("option");
+                option7.value="Ramban";
+                option7.innerHTML="Ramban";
+                select2.appendChild(option7);
+                // Option 8
+                let option8=document.createElement("option");
+                option8.value="Reasi";
+                option8.innerHTML="Reasi";
+                select2.appendChild(option8);
+                // Option 9
+                let option9=document.createElement("option");
+                option9.value="Samba";
+                option9.innerHTML="Samba";
+                select2.appendChild(option9);
+                // Option 10
+                let option10=document.createElement("option");
+                option10.value="Udhampur";
+                option10.innerHTML="Udhampur";
+                select2.appendChild(option10);
+                // Option 11
+                let option11=document.createElement("option");
+                option11.value="Anantanag";
+                option11.innerHTML="Anantanag";
+                select2.appendChild(option11);
+                // Option 12
+                let option12=document.createElement("option");
+                option12.value="Bandipora";
+                option12.innerHTML="Bandipora";
+                select2.appendChild(option12);
+                // Option 13
+                let option13=document.createElement("option");
+                option13.value="Baramulla";
+                option13.innerHTML="Baramulla";
+                select2.appendChild(option13);
+                // Option 14
+                let option14=document.createElement("option");
+                option14.value="Budgam";
+                option14.innerHTML="Budgam";
+                select2.appendChild(option14);
+                // Option 15
+                let option15=document.createElement("option");
+                option15.value="Ganderbal";
+                option15.innerHTML="Ganderbal";
+                select2.appendChild(option15);
+                // Option 16
+                let option16=document.createElement("option");
+                option16.value="Kulgam";
+                option16.innerHTML="Kulgam";
+                select2.appendChild(option16);
+                // Option 17
+                let option17=document.createElement("option");
+                option17.value="Kupwara";
+                option17.innerHTML="Kupwara";
+                select2.appendChild(option17);
+                // Option 18
+                let option18=document.createElement("option");
+                option18.value="Pulwama";
+                option18.innerHTML="Pulwama";
+                select2.appendChild(option18);
+                // Option 19
+                let option19=document.createElement("option");
+                option19.value="Shopian";
+                option19.innerHTML="Shopian";
+                select2.appendChild(option19);
+                // Option 20
+                let option20=document.createElement("option");
+                option20.value="Srinagar";
+                option20.innerHTML="Srinagar";
+                select2.appendChild(option20);
+            }
+        }
+    </script>
+</body>
+</html>
